@@ -1,9 +1,13 @@
-import { Button, Input, List, Row, Text, Column, Logo } from 'components';
+import { Button, Input, List, Row, Text, Column, Logo, Icon } from 'components';
 import { useState } from 'react';
+
+const SECONDS_DEFAULT = 1500;
 
 export const Home = () => {
   const [taskName, setTaskName] = useState('');
   const [tasks, setTasks] = useState<{ label: string }[]>([]);
+  const [seconds, setSeconds] = useState(SECONDS_DEFAULT);
+  const [timer, setTimer] = useState<any>();
 
   const handleOkButton = () => {
     if (!taskName) return;
@@ -15,6 +19,40 @@ export const Home = () => {
     });
 
     setTaskName('');
+  };
+
+  const secondsToMinutes = (secs: number) => {
+    const divisorMinute = secs % 3600;
+
+    const minutes = Math.floor(divisorMinute / 60);
+
+    const seconds = Math.ceil(divisorMinute % 60);
+
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  const startTimer = () => {
+    const timerInterval = setInterval(() => {
+      setSeconds((previousSeconds) => {
+        if (previousSeconds === 0) {
+          clearInterval(timerInterval);
+          return 0;
+        }
+        return previousSeconds - 1;
+      });
+    }, 1000);
+
+    setTimer(timerInterval);
+  };
+
+  const handlePauseButton = () => {
+    clearInterval(timer);
+    setTimer(undefined);
+  };
+
+  const handleStopButton = () => {
+    handlePauseButton();
+    setSeconds(SECONDS_DEFAULT);
   };
 
   return (
@@ -36,14 +74,32 @@ export const Home = () => {
         </Text>
 
         <Text fontFamily="secondary" fontSize="displayExtraLarge" fontWeight="bold" padding="30px">
-          25:00
+          {secondsToMinutes(seconds)}
         </Text>
 
-        <Button variant="primary">
+        <Button variant="primary" onClick={startTimer}>
           <Text fontFamily="secondary" fontSize="bodyExtraLarge" fontWeight="bold" color="primary">
             START
           </Text>
         </Button>
+
+        <Row py="20px">
+          <Button variant="primary" p="10px 20px" mx="5px" onClick={startTimer}>
+            <Icon variant="play" />
+          </Button>
+          <Button variant="primary" p="10px 20px" mx="5px" onClick={handlePauseButton}>
+            <Icon variant="pause" />
+          </Button>
+          <Button variant="primary" p="10px 20px" mx="5px" onClick={handleStopButton}>
+            <Icon variant="stop" />
+          </Button>
+          <Button variant="primary" p="10px 20px" mx="5px" onClick={startTimer}>
+            <Icon variant="restart" />
+          </Button>
+          <Button variant="primary" p="10px 20px" mx="5px">
+            <Icon variant="done" />
+          </Button>
+        </Row>
       </Column>
 
       <Text fontWeight="bold" my="18px" fontSize="bodyLarge" pl="10px">

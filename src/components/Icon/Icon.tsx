@@ -15,5 +15,5 @@ export const Icon: React.FC<IconProps> = ({ variant }) => {
     mount();
   }, [variant]);
 
-  return <img src={iconSrc} width="32px" height="32px" alt={variant} />;
+  return <img src={iconSrc} width="22px" height="22x" alt={variant} />;
 };
