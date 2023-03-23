@@ -23,6 +23,29 @@ export const Home = () => {
         <Logo />
       </Column>
 
+      <Column
+        width="100%"
+        minHeight="300px"
+        padding="20px"
+        bg="rgba(255,255,255,0.2)"
+        borderRadius="4px"
+        alignItems="center"
+      >
+        <Text fontFamily="secondary" fontSize="bodyExtraLarge">
+          Ready
+        </Text>
+
+        <Text fontFamily="secondary" fontSize="displayExtraLarge" fontWeight="bold" padding="30px">
+          25:00
+        </Text>
+
+        <Button variant="primary">
+          <Text fontFamily="secondary" fontSize="bodyExtraLarge" fontWeight="bold" color="primary">
+            START
+          </Text>
+        </Button>
+      </Column>
+
       <Text fontWeight="bold" my="18px" fontSize="bodyLarge" pl="10px">
         Tasks
       </Text>
@@ -33,7 +56,9 @@ export const Home = () => {
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
         />
-        <Button onClick={handleOkButton}>Ok</Button>
+        <Button variant="default" onClick={handleOkButton}>
+          Ok
+        </Button>
       </Row>
 
       <List items={tasks} />
